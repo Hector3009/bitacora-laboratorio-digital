@@ -1,0 +1,86 @@
+:root {
+    --primary-clinical: #0d6efd;
+    --secondary-lab: #198754;
+    --bg-light: #f8f9fa;
+    --text-main: #343a40;
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+}
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.badge-quimica { background-color: #6f42c1; }
+.badge-microbiologia { background-color: #198754; }
+.badge-hematologia { background-color: #dc3545; }
+
+.modal-content {
+    border-radius: 15px;
+}
+
+.practice-section-title {
+    color: var(--primary-clinical);
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 5px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.card-footer {
+    background-color: transparent !important;
+    border-top: 1px solid #f1f1f1 !important;
+}
+
+.scrollable-filters {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Oculta scrollbar en Firefox */
+    -ms-overflow-style: none;  /* Oculta scrollbar en IE/Edge */
+}
+
+.scrollable-filters::-webkit-scrollbar {
+    display: none; /* Oculta scrollbar en Chrome/Safari */
+}
+
+.scrollable-filters .btn {
+    white-space: nowrap; /* Evita que el texto de los botones se rompa en dos líneas */
+}
+
+.category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #fff;
+    border-radius: 8px;
+}
+
+/* Asegurar que el modal body tenga scroll visible y estético */
+.modal-body {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-clinical) #f1f1f1;
+}
+
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}

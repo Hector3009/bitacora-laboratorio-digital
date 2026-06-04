@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitácora Digital de Laboratorio | Bachillerato</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <span class="me-2">🔬</span> Bitácora de Laboratorio
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-white py-5 mb-4 border-bottom">
+        <div class="container text-center">
+            <h1 class="fw-bold text-dark">Registro Digital de Prácticas</h1>
+            <p class="lead text-muted">Especialidad de Laboratorio Clínico y Químico - Semestre 2024</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Filtros -->
+        <div class="row mb-4 align-items-center">
+            <div class="col-md-8 mb-3 mb-md-0">
+                <div class="d-flex gap-2 scrollable-filters pb-2" id="filter-buttons">
+                    <!-- Se carga dinámicamente -->
+                </div>
+            </div>
+            <div class="col-md-4 text-md-end d-flex gap-2 justify-content-md-end">
+                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#categoryModal" title="Administrar Categorías">⚙️</button>
+                <button class="btn btn-success fw-bold px-4 w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#practiceFormModal" onclick="prepareCreate()">+ Nueva Práctica</button>
+            </div>
+        </div>
+
+        <!-- Grid de Prácticas -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="practice-grid">
+            <!-- Las tarjetas se cargarán dinámicamente con JS -->
+        </div>
+    </main>
+
+    <!-- Modal de Detalle -->
+    <div class="modal fade" id="practiceModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title fw-bold" id="modalTitle">Detalle de la Práctica</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4" id="modalBody">
+                    <!-- Contenido dinámico -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Formulario (CRUD) -->
+    <div class="modal fade" id="practiceFormModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <form id="practiceForm" class="modal-content border-0 shadow">
+                    <div class="modal-header bg-primary text-white d-flex align-items-center">
+                        <h5 class="modal-title fw-bold mb-0" id="formModalTitle">Nueva Práctica</h5>
+                        <div class="ms-auto d-flex gap-2">
+                            <button type="button" class="btn btn-sm btn-light fw-bold" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-sm btn-success fw-bold px-3">Guardar</button>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <input type="hidden" id="practiceId">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label fw-bold small">Nombre de la Práctica</label>
+                                <input type="text" id="formTitle" class="form-control" placeholder="Ej: Tinción de Gram" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small">Categoría</label>
+                                <select id="formCategory" class="form-select" required></select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">Fecha</label>
+                                <input type="date" id="formDate" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold small">Imagen (URL)</label>
+                                <input type="url" id="formImage" class="form-control" placeholder="https://ejemplo.com/foto.jpg (Opcional)">
+                                <div class="form-text">Deja este campo vacío para generar una imagen científica aleatoria.</div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold small">Resumen</label>
+                                <textarea id="formSummary" class="form-control" rows="2" placeholder="Breve descripción para la tarjeta..." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold small">Objetivo</label>
+                                <textarea id="formObjective" class="form-control" rows="2" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold small">Materiales (uno por línea)</label>
+                                <textarea id="formMaterials" class="form-control" rows="3" placeholder="Portaobjetos&#10;Lugol..." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold small">Procedimiento (uno por línea)</label>
+                                <textarea id="formProcedure" class="form-control" rows="3" placeholder="1. Fijar muestra...&#10;2. Agregar colorante..." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold small">Resultados y Conclusiones</label>
+                                <textarea id="formResults" class="form-control" rows="3" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+        </div>
+    </div>
+
+    <!-- Modal de Gestión de Categorías -->
+    <div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Categorías</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <div id="categoryList" class="d-flex flex-column gap-2 mb-3">
+                        <!-- Lista dinámica -->
+                    </div>
+                    <hr>
+                    <div class="input-group input-group-sm">
+                        <input type="text" id="newCategoryInput" class="form-control" placeholder="Nueva...">
+                        <button class="btn btn-primary" onclick="addCategory()">Añadir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-4 mt-5 bg-light border-top">
+        <div class="container text-center">
+            <p class="text-muted mb-0">&copy; 2026 Bitácora Digital - Cibeles Hernandez de Laboratorio</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/script.js"></script>
+</body>
+</html>
