@@ -268,8 +268,35 @@ document.getElementById('filter-buttons').addEventListener('click', (e) => {
     }
 });
 
+// Función para crear la animación de Sakura
+function initSakura() {
+    const container = document.getElementById('sakura-container');
+    if (!container) return;
+
+    const petalCount = 15; // Cantidad de pétalos simultáneos
+
+    for (let i = 0; i < petalCount; i++) {
+        createPetal(container);
+    }
+}
+
+function createPetal(container) {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    
+    const size = Math.random() * 10 + 10 + 'px';
+    petal.style.width = size;
+    petal.style.height = size;
+    petal.style.left = Math.random() * 100 + '%';
+    petal.style.animationDuration = Math.random() * 5 + 5 + 's'; // Entre 5 y 10 segundos
+    petal.style.animationDelay = Math.random() * 5 + 's';
+
+    container.appendChild(petal);
+}
+
 // Carga inicial
 document.addEventListener('DOMContentLoaded', () => {
     renderCategoryUI();
     renderPractices();
+    initSakura();
 });
